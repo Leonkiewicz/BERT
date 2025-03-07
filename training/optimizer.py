@@ -1,0 +1,3 @@
+def create_optimizer(model, learning_rate):
+    # ...existing code...
+    pass
