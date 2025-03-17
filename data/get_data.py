@@ -3,18 +3,12 @@ import tarfile
 import zipfile
 import os
 import pandas as pd
-from tqdm import tqdm
 
 
 def download_corpus(url, local_fname):
     extract_path = 'datasets'
     os.makedirs(extract_path, exist_ok=True)
-    with tqdm(unit='B', unit_scale=True, unit_divisor=1024, miniters=1, desc=local_fname) as t:
-        def reporthook(block_num, block_size, total_size):
-            if t.total is None:
-                t.total = total_size
-            t.update(block_size)
-        urllib.request.urlretrieve(url, local_fname, reporthook)
+    urllib.request.urlretrieve(url, local_fname)
     print(f"File downloaded as {local_fname}")
     if local_fname.endswith('.tar.gz') or local_fname.endswith('.tgz'):
         with tarfile.open(local_fname, 'r:gz') as tar:
@@ -47,3 +41,13 @@ def text_to_df(file_path):
     df = pd.DataFrame(data)
     return df
 
+
+if __name__ == '__main__':
+    print("Downloading began")
+    # url = 'http://www.cs.cornell.edu/~cristian/data/cornell_movie_dialogs_corpus.zip'
+    # local_fname = url.split('/')[-1]  
+    # download_corpus(url, local_fname)
+
+    url = 'https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz'
+    local_fname = url.split('/')[-1]  
+    download_corpus(url, local_fname)
